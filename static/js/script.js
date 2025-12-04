@@ -1,23 +1,27 @@
-// Create floating particles
+// Create floating particles - optimized
 function createParticles() {
     const particlesContainer = document.getElementById('particles');
-    const particleCount = 100;
+    const particleCount = 50; // Reduced for performance
 
-    // Background particles only
+    // Use document fragment for batch DOM insertion
+    const fragment = document.createDocumentFragment();
+
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
 
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 3 + 's';
+        particle.style.cssText = `
+            left: ${Math.random() * 100}%;
+            top: ${Math.random() * 100}%;
+            animation-delay: ${Math.random() * 4}s;
+            width: ${Math.random() * 2 + 1}px;
+            height: ${Math.random() * 2 + 1}px;
+        `;
 
-        const size = Math.random() * 2 + 2;
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
-
-        particlesContainer.appendChild(particle);
+        fragment.appendChild(particle);
     }
+    
+    particlesContainer.appendChild(fragment);
 }
 
 // Create attack particles
@@ -246,9 +250,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Tab is visible - resume attacks if home is fully visible
             isTabVisible = true;
-            if (isHomeFullyVisible) {
-                startAttackWaves();
-            }
+            // COMMENTED OUT: Red attack vectors disabled
+            // if (isHomeFullyVisible) {
+            //     startAttackWaves();
+            // }
         }
     });
 
@@ -262,12 +267,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (shouldShowAttacks && !isHomeFullyVisible) {
             // Just scrolled back to top - start attacks
             isHomeFullyVisible = true;
-            if (isTabVisible) {
-                // Start immediately without delay
-                startAttackWaves();
-                // Create immediate attack for responsiveness
-                createAttackParticle();
-            }
+            // COMMENTED OUT: Red attack vectors disabled
+            // if (isTabVisible) {
+            //     // Start immediately without delay
+            //     startAttackWaves();
+            //     // Create immediate attack for responsiveness
+            //     createAttackParticle();
+            // }
         } else if (!shouldShowAttacks && isHomeFullyVisible) {
             // Just scrolled down - stop attacks immediately
             isHomeFullyVisible = false;
@@ -328,49 +334,66 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // COMMENTED OUT: Red attack vectors disabled
     // Initial attack wave (only if conditions are met)
-    setTimeout(() => {
-        if (isTabVisible && isHomeFullyVisible) {
-            startAttackWaves();
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    if (isTabVisible && isHomeFullyVisible) {
-                        createAttackParticle();
-                    }
-                }, i * 600);
-            }
-        }
-    }, 1000);
+    // setTimeout(() => {
+    //     if (isTabVisible && isHomeFullyVisible) {
+    //         startAttackWaves();
+    //         for (let i = 0; i < 5; i++) {
+    //             setTimeout(() => {
+    //                 if (isTabVisible && isHomeFullyVisible) {
+    //                     createAttackParticle();
+    //                 }
+    //             }, i * 600);
+    //         }
+    //     }
+    // }, 1000);
 
-    // Smooth scrolling for navigation
+    // Smooth scrolling for navigation with easing
     document.querySelectorAll('.nav-links a').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
             if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+                const headerOffset = 80;
+                const elementPosition = targetSection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                smoothScrollTo(offsetPosition, 600);
             }
         });
     });
 
-    // Add subtle mouse interaction
-    document.addEventListener('mousemove', (e) => {
-        const particles = document.querySelectorAll('.particle');
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
+    // Custom smooth scroll function with easing
+    function smoothScrollTo(targetPosition, duration) {
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
 
-        particles.forEach((particle, index) => {
-            if (index % 10 === 0) {
-                const offsetX = (mouseX - 0.5) * 20;
-                const offsetY = (mouseY - 0.5) * 20;
-                particle.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+        function easeInOutCubic(t) {
+            return t < 0.5
+                ? 4 * t * t * t
+                : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const progress = Math.min(timeElapsed / duration, 1);
+            const easeProgress = easeInOutCubic(progress);
+            
+            window.scrollTo(0, startPosition + distance * easeProgress);
+
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
             }
-        });
-    });
+        }
+
+        requestAnimationFrame(animation);
+    }
+
+    // Mouse interaction removed for better performance
 
     // Contact form submission
     document.querySelector('.contact-form').addEventListener('submit', function (e) {
@@ -388,4 +411,133 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // ===== ENHANCED SCROLL ANIMATIONS =====
+    
+    // Throttle function for scroll performance
+    function throttle(func, limit) {
+        let inThrottle;
+        return function(...args) {
+            if (!inThrottle) {
+                func.apply(this, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+
+    // Navbar scroll effect
+    const header = document.querySelector('header');
+    let lastScroll = 0;
+    
+    const handleHeaderScroll = throttle(() => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+        
+        lastScroll = currentScroll;
+    }, 10);
+    
+    window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+
+    // Scroll reveal animation using Intersection Observer - optimized
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                revealObserver.unobserve(entry.target); // Stop observing once revealed
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px'
+    });
+
+    // Auto-add reveal classes to main sections and cards
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        // Add reveal to section titles
+        const titles = section.querySelectorAll('.section-title, .security-matrix-title, .projects-hero-title, .insights-title, .contact-main-title');
+        titles.forEach(title => {
+            title.classList.add('reveal');
+            revealObserver.observe(title);
+        });
+
+        // Add reveal to subtitles
+        const subtitles = section.querySelectorAll('.security-matrix-subtitle, .projects-hero-subtitle, .insights-subtitle, .contact-subtitle');
+        subtitles.forEach(subtitle => {
+            subtitle.classList.add('reveal');
+            revealObserver.observe(subtitle);
+        });
+    });
+
+    // Add staggered reveal to service cards
+    const serviceCards = document.querySelectorAll('.service-card');
+    serviceCards.forEach((card, index) => {
+        card.classList.add('reveal-scale');
+        card.style.transitionDelay = `${index * 0.1}s`;
+        revealObserver.observe(card);
+    });
+
+    // Add reveal to blog strips
+    const blogStrips = document.querySelectorAll('.blog-strip');
+    blogStrips.forEach((strip, index) => {
+        strip.classList.add('reveal');
+        strip.style.transitionDelay = `${index * 0.15}s`;
+        revealObserver.observe(strip);
+    });
+
+    // Add reveal to contact form elements
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.classList.add('reveal-left');
+        revealObserver.observe(contactForm);
+    }
+
+    const contactInfo = document.querySelector('.contact-info-section');
+    if (contactInfo) {
+        contactInfo.classList.add('reveal-right');
+        revealObserver.observe(contactInfo);
+    }
+
+    // Add reveal to announcement box
+    const announcementBox = document.querySelector('.announcement-box');
+    if (announcementBox) {
+        announcementBox.classList.add('reveal-scale');
+        revealObserver.observe(announcementBox);
+    }
+
+    // Add reveal to status container
+    const statusContainer = document.querySelector('.status-container');
+    if (statusContainer) {
+        statusContainer.classList.add('reveal');
+        revealObserver.observe(statusContainer);
+    }
+
+    // Active nav link highlighting based on scroll position - optimized
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sectionsList = document.querySelectorAll('section[id]');
+
+    const handleNavHighlight = throttle(() => {
+        const scrollPos = window.pageYOffset + 250;
+        let current = 'home';
+        
+        sectionsList.forEach(section => {
+            if (scrollPos >= section.offsetTop) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
+        });
+    }, 100); // Increased throttle for performance
+
+    window.addEventListener('scroll', handleNavHighlight, { passive: true });
+
+    // Parallax removed for better scroll performance
 });
