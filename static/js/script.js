@@ -1,543 +1,514 @@
-// Create floating particles - optimized
-function createParticles() {
-    const particlesContainer = document.getElementById('particles');
-    const particleCount = 50; // Reduced for performance
+// ============================================
+// CYBERBURGS - Modern Enterprise JavaScript
+// ============================================
 
-    // Use document fragment for batch DOM insertion
-    const fragment = document.createDocumentFragment();
-
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-
-        particle.style.cssText = `
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation-delay: ${Math.random() * 4}s;
-            width: ${Math.random() * 2 + 1}px;
-            height: ${Math.random() * 2 + 1}px;
-        `;
-
-        fragment.appendChild(particle);
-    }
-    
-    particlesContainer.appendChild(fragment);
-}
-
-// Create attack particles
-function createAttackParticle() {
-    const particlesContainer = document.getElementById('particles');
-    const attack = document.createElement('div');
-
-    // Style the attack particle
-    attack.style.position = 'fixed';
-    attack.style.width = '8px';
-    attack.style.height = '8px';
-    attack.style.background = '#ff0000';
-    attack.style.borderRadius = '50%';
-    attack.style.boxShadow = '0 0 15px #ff0000, 0 0 30px #ff0000';
-    attack.style.zIndex = '5';
-
-    // Random spawn position from edges
-    const edge = Math.floor(Math.random() * 4);
-    let startX, startY;
-
-    switch (edge) {
-        case 0: // Top
-            startX = Math.random() * window.innerWidth;
-            startY = -20;
-            break;
-        case 1: // Right
-            startX = window.innerWidth + 20;
-            startY = Math.random() * window.innerHeight;
-            break;
-        case 2: // Bottom
-            startX = Math.random() * window.innerWidth;
-            startY = window.innerHeight + 20;
-            break;
-        case 3: // Left
-            startX = -20;
-            startY = Math.random() * window.innerHeight;
-            break;
-    }
-
-    attack.style.left = startX + 'px';
-    attack.style.top = startY + 'px';
-
-    particlesContainer.appendChild(attack);
-
-    // Animate toward center logo
-    animateAttack(attack, startX, startY);
-}
-
-// Animate attack particle toward center
-function animateAttack(element, startX, startY) {
-    // Get the actual logo element position (the outer circle)
-    const logoElement = document.querySelector('.main-logo');
-    if (!logoElement) return;
-
-    const logoRect = logoElement.getBoundingClientRect();
-
-    // Target the center of the logo
-    const centerX = logoRect.left + (logoRect.width / 2);
-    const centerY = logoRect.top + (logoRect.height / 2);
-
-    // Calculate the radius of the logo area
-    const logoRadius = (logoRect.width / 2);
-
-    const deltaX = centerX - startX;
-    const deltaY = centerY - startY;
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-    const speed = 4; // pixels per frame
-    let currentStep = 0;
-
-    function updateAttack() {
-        // Check if home is still fully visible, if not, remove particle silently
-        const scrollY = window.scrollY || window.pageYOffset;
-        if (scrollY > 10) {
-            // Silently remove the particle without blast effect
-            if (element.parentNode) {
-                element.style.opacity = '0';
-                element.style.transition = 'opacity 0.2s ease';
-                setTimeout(() => {
-                    if (element.parentNode) {
-                        element.parentNode.removeChild(element);
-                    }
-                }, 200);
-            }
-            return;
-        }
-
-        const progress = currentStep / (distance / speed);
-        const currentX = startX + (deltaX * progress);
-        const currentY = startY + (deltaY * progress);
-
-        // Calculate current distance from logo center
-        const currentDistanceFromCenter = Math.sqrt(
-            Math.pow(currentX - centerX, 2) + Math.pow(currentY - centerY, 2)
-        );
-
-        // Check if particle hit the logo area
-        if (currentDistanceFromCenter <= logoRadius) {
-            // Hit the logo area - create blast effect at impact point
-            createBlastEffect(currentX, currentY);
-
-            // Remove the attack particle
-            if (element.parentNode) {
-                element.parentNode.removeChild(element);
-            }
-            return;
-        }
-
-        element.style.left = currentX + 'px';
-        element.style.top = currentY + 'px';
-
-        currentStep += speed;
-        requestAnimationFrame(updateAttack);
-    }
-
-    updateAttack();
-}
-
-// Create blast effect when attack hits logo
-function createBlastEffect(x, y) {
-    const particlesContainer = document.getElementById('particles');
-
-    // Create multiple blast particles
-    for (let i = 0; i < 8; i++) {
-        const blast = document.createElement('div');
-        blast.style.position = 'fixed';
-        blast.style.width = '4px';
-        blast.style.height = '4px';
-        blast.style.background = '#ffaa00';
-        blast.style.borderRadius = '50%';
-        blast.style.boxShadow = '0 0 10px #ffaa00';
-        blast.style.left = x + 'px';
-        blast.style.top = y + 'px';
-        blast.style.zIndex = '10';
-
-        particlesContainer.appendChild(blast);
-
-        // Animate blast particles outward
-        const angle = (i / 8) * 360;
-        const velocity = 50;
-
-        animateBlast(blast, x, y, angle, velocity);
-    }
-
-    // Create central flash effect
-    const flash = document.createElement('div');
-    flash.style.position = 'fixed';
-    flash.style.width = '30px';
-    flash.style.height = '30px';
-    flash.style.background = 'radial-gradient(circle, #ffffff 0%, #ffaa00 50%, transparent 100%)';
-    flash.style.borderRadius = '50%';
-    flash.style.left = (x - 15) + 'px';
-    flash.style.top = (y - 15) + 'px';
-    flash.style.zIndex = '15';
-    flash.style.opacity = '1';
-
-    particlesContainer.appendChild(flash);
-
-    // Fade out flash
-    let flashOpacity = 1;
-    const fadeFlash = () => {
-        flashOpacity -= 0.05;
-        flash.style.opacity = flashOpacity;
-        if (flashOpacity > 0) {
-            requestAnimationFrame(fadeFlash);
-        } else if (flash.parentNode) {
-            flash.parentNode.removeChild(flash);
-        }
-    };
-    fadeFlash();
-}
-
-// Animate blast particles
-function animateBlast(element, startX, startY, angle, velocity) {
-    const radians = angle * Math.PI / 180;
-    const vx = Math.cos(radians) * velocity;
-    const vy = Math.sin(radians) * velocity;
-
-    let x = startX;
-    let y = startY;
-    let life = 1.0;
-
-    function updateBlast() {
-        // Check if home is still visible, if not, fade out blast particles quickly
-        const scrollY = window.scrollY || window.pageYOffset;
-        if (scrollY > 10) {
-            life -= 0.1; // Fade out faster when scrolled
-        }
-
-        x += vx * 0.1;
-        y += vy * 0.1;
-        life -= 0.02;
-
-        element.style.left = x + 'px';
-        element.style.top = y + 'px';
-        element.style.opacity = life;
-        element.style.transform = `scale(${life})`;
-
-        if (life > 0) {
-            requestAnimationFrame(updateBlast);
-        } else if (element.parentNode) {
-            element.parentNode.removeChild(element);
-        }
-    }
-
-    updateBlast();
-}
-
-// Initialize everything
 document.addEventListener('DOMContentLoaded', () => {
-    createParticles();
+    // ===== MOBILE MENU =====
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
 
-    let attackInterval;
-    let isTabVisible = true;
-    let isHomeFullyVisible = true;
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        });
 
-    // Handle visibility change
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-            // Tab is hidden - stop attacks and clear existing ones
-            isTabVisible = false;
-            if (attackInterval) {
-                clearInterval(attackInterval);
-            }
-            clearAllAttackParticles();
-        } else {
-            // Tab is visible - resume attacks if home is fully visible
-            isTabVisible = true;
-            // COMMENTED OUT: Red attack vectors disabled
-            // if (isHomeFullyVisible) {
-            //     startAttackWaves();
-            // }
-        }
-    });
-
-    // Handle scroll events to detect home section visibility
-    function handleScroll() {
-        const scrollY = window.scrollY || window.pageYOffset;
-
-        // Stop attacks if scrolled down even slightly (more than 10px)
-        const shouldShowAttacks = scrollY <= 10;
-
-        if (shouldShowAttacks && !isHomeFullyVisible) {
-            // Just scrolled back to top - start attacks
-            isHomeFullyVisible = true;
-            // COMMENTED OUT: Red attack vectors disabled
-            // if (isTabVisible) {
-            //     // Start immediately without delay
-            //     startAttackWaves();
-            //     // Create immediate attack for responsiveness
-            //     createAttackParticle();
-            // }
-        } else if (!shouldShowAttacks && isHomeFullyVisible) {
-            // Just scrolled down - stop attacks immediately
-            isHomeFullyVisible = false;
-            if (attackInterval) {
-                clearInterval(attackInterval);
-            }
-            // Clear particles immediately
-            clearAllAttackParticles();
-        }
-    }
-
-    // Add scroll listener for immediate response with passive for better performance
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Initial check
-    handleScroll();
-
-    // Clear all existing attack particles with improved method
-    function clearAllAttackParticles() {
-        const particlesContainer = document.getElementById('particles');
-        if (!particlesContainer) return;
-
-        // Get all children that are not background particles
-        const allChildren = Array.from(particlesContainer.children);
-        allChildren.forEach(child => {
-            if (!child.classList.contains('particle')) {
-                // Immediately remove attack particles and their animations
-                child.style.transition = 'none';
-                child.style.opacity = '0';
-                if (child.parentNode) {
-                    child.parentNode.removeChild(child);
-                }
-            }
+        // Close menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+            });
         });
     }
 
-    // Start attack waves
-    function startAttackWaves() {
-        if (attackInterval) {
-            clearInterval(attackInterval);
-        }
-
-        // Start with shorter interval for more responsive feel
-        attackInterval = setInterval(createAttackWaves, 2000);
-    }
-
-    // Create attack waves only when conditions are met
-    function createAttackWaves() {
-        if (!isTabVisible || !isHomeFullyVisible) return;
-
-        const waveSize = Math.floor(Math.random() * 4) + 2;
-        for (let i = 0; i < waveSize; i++) {
-            setTimeout(() => {
-                if (isTabVisible && isHomeFullyVisible) { // Double check before creating each particle
-                    createAttackParticle();
-                }
-            }, i * 400);
-        }
-    }
-
-    // COMMENTED OUT: Red attack vectors disabled
-    // Initial attack wave (only if conditions are met)
-    // setTimeout(() => {
-    //     if (isTabVisible && isHomeFullyVisible) {
-    //         startAttackWaves();
-    //         for (let i = 0; i < 5; i++) {
-    //             setTimeout(() => {
-    //                 if (isTabVisible && isHomeFullyVisible) {
-    //                     createAttackParticle();
-    //                 }
-    //             }, i * 600);
-    //         }
-    //     }
-    // }, 1000);
-
-    // Smooth scrolling for navigation with easing
-    document.querySelectorAll('.nav-links a').forEach(anchor => {
+    // ===== SMOOTH SCROLLING =====
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
+
             if (targetSection) {
-                const headerOffset = 80;
+                const headerOffset = 100;
                 const elementPosition = targetSection.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-                smoothScrollTo(offsetPosition, 600);
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
             }
         });
     });
 
-    // Custom smooth scroll function with easing
-    function smoothScrollTo(targetPosition, duration) {
-        const startPosition = window.pageYOffset;
-        const distance = targetPosition - startPosition;
-        let startTime = null;
-
-        function easeInOutCubic(t) {
-            return t < 0.5
-                ? 4 * t * t * t
-                : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        }
-
-        function animation(currentTime) {
-            if (startTime === null) startTime = currentTime;
-            const timeElapsed = currentTime - startTime;
-            const progress = Math.min(timeElapsed / duration, 1);
-            const easeProgress = easeInOutCubic(progress);
-            
-            window.scrollTo(0, startPosition + distance * easeProgress);
-
-            if (timeElapsed < duration) {
-                requestAnimationFrame(animation);
-            }
-        }
-
-        requestAnimationFrame(animation);
-    }
-
-    // Mouse interaction removed for better performance
-
-    // Contact form submission
-    document.querySelector('.contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        alert('Thank you for your message! We will get back to you soon.');
-        this.reset();
-    });
-
-    // Blog strip click functionality
-    document.querySelectorAll('.blog-strip').forEach(strip => {
-        strip.addEventListener('click', function () {
-            const blogUrl = this.getAttribute('data-link');
-            if (blogUrl) {
-                window.location.href = blogUrl; // Navigate to that URL
-            }
-        });
-    });
-
-    // ===== ENHANCED SCROLL ANIMATIONS =====
-    
-    // Throttle function for scroll performance
-    function throttle(func, limit) {
-        let inThrottle;
-        return function(...args) {
-            if (!inThrottle) {
-                func.apply(this, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        };
-    }
-
-    // Navbar scroll effect
+    // ===== HEADER SCROLL EFFECT =====
     const header = document.querySelector('header');
+    const scrollProgressBar = document.querySelector('.scroll-progress-bar');
+    const backToTopBtn = document.getElementById('backToTop');
     let lastScroll = 0;
-    
-    const handleHeaderScroll = throttle(() => {
+
+    const handleHeaderScroll = () => {
         const currentScroll = window.pageYOffset;
-        
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (currentScroll / docHeight) * 100;
+
+        // Header background effect
         if (currentScroll > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
-        
-        lastScroll = currentScroll;
-    }, 10);
-    
-    window.addEventListener('scroll', handleHeaderScroll, { passive: true });
 
-    // Scroll reveal animation using Intersection Observer - optimized
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                revealObserver.unobserve(entry.target); // Stop observing once revealed
+        // Scroll progress bar
+        if (scrollProgressBar) {
+            scrollProgressBar.style.width = `${scrollPercent}%`;
+        }
+
+        // Back to top button visibility
+        if (backToTopBtn) {
+            if (currentScroll > 500) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
             }
+        }
+
+        lastScroll = currentScroll;
+    };
+
+    // Back to top click handler
+    if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
-    }, {
-        threshold: 0.15,
-        rootMargin: '0px'
-    });
-
-    // Auto-add reveal classes to main sections and cards
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        // Add reveal to section titles
-        const titles = section.querySelectorAll('.section-title, .security-matrix-title, .projects-hero-title, .insights-title, .contact-main-title');
-        titles.forEach(title => {
-            title.classList.add('reveal');
-            revealObserver.observe(title);
-        });
-
-        // Add reveal to subtitles
-        const subtitles = section.querySelectorAll('.security-matrix-subtitle, .projects-hero-subtitle, .insights-subtitle, .contact-subtitle');
-        subtitles.forEach(subtitle => {
-            subtitle.classList.add('reveal');
-            revealObserver.observe(subtitle);
-        });
-    });
-
-    // Add staggered reveal to service cards
-    const serviceCards = document.querySelectorAll('.service-card');
-    serviceCards.forEach((card, index) => {
-        card.classList.add('reveal-scale');
-        card.style.transitionDelay = `${index * 0.1}s`;
-        revealObserver.observe(card);
-    });
-
-    // Add reveal to blog strips
-    const blogStrips = document.querySelectorAll('.blog-strip');
-    blogStrips.forEach((strip, index) => {
-        strip.classList.add('reveal');
-        strip.style.transitionDelay = `${index * 0.15}s`;
-        revealObserver.observe(strip);
-    });
-
-    // Add reveal to contact form elements
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.classList.add('reveal-left');
-        revealObserver.observe(contactForm);
     }
 
-    const contactInfo = document.querySelector('.contact-info-section');
-    if (contactInfo) {
-        contactInfo.classList.add('reveal-right');
-        revealObserver.observe(contactInfo);
-    }
+    window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+    handleHeaderScroll(); // Initial check
 
-    // Add reveal to announcement box
-    const announcementBox = document.querySelector('.announcement-box');
-    if (announcementBox) {
-        announcementBox.classList.add('reveal-scale');
-        revealObserver.observe(announcementBox);
-    }
+    // ===== ACTIVE NAV LINK HIGHLIGHTING =====
+    const navLinksItems = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section[id]');
 
-    // Add reveal to status container
-    const statusContainer = document.querySelector('.status-container');
-    if (statusContainer) {
-        statusContainer.classList.add('reveal');
-        revealObserver.observe(statusContainer);
-    }
-
-    // Active nav link highlighting based on scroll position - optimized
-    const navLinks = document.querySelectorAll('.nav-links a');
-    const sectionsList = document.querySelectorAll('section[id]');
-
-    const handleNavHighlight = throttle(() => {
-        const scrollPos = window.pageYOffset + 250;
+    const highlightNavLink = () => {
+        const scrollPos = window.pageYOffset + 200;
         let current = 'home';
-        
-        sectionsList.forEach(section => {
+
+        sections.forEach(section => {
             if (scrollPos >= section.offsetTop) {
                 current = section.getAttribute('id');
             }
         });
 
-        navLinks.forEach(link => {
+        navLinksItems.forEach(link => {
             link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
         });
-    }, 100); // Increased throttle for performance
+    };
 
-    window.addEventListener('scroll', handleNavHighlight, { passive: true });
+    window.addEventListener('scroll', highlightNavLink, { passive: true });
+    highlightNavLink(); // Initial check
 
-    // Parallax removed for better scroll performance
+    // ===== SCROLL REVEAL ANIMATIONS =====
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Observe all reveal elements
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+        revealObserver.observe(el);
+    });
+
+    // ===== STATS COUNTER ANIMATION =====
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                statsObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.5
+    });
+
+    const statsSection = document.querySelector('.stats-section');
+    if (statsSection) {
+        statsObserver.observe(statsSection);
+    }
+
+    function animateCounters() {
+        const counters = document.querySelectorAll('.stat-number[data-target]');
+
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            const duration = 2000; // 2 seconds
+            const increment = target / (duration / 16); // 60fps
+            let current = 0;
+
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    counter.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target;
+                }
+            };
+
+            updateCounter();
+        });
+    }
+
+    // ===== CONTACT FORM VALIDATION & XSS PROTECTION =====
+    const contactForm = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const charCount = document.getElementById('charCount');
+    const messageTextarea = document.getElementById('message');
+
+    // XSS Sanitization function
+    function sanitizeInput(input) {
+        if (typeof input !== 'string') return '';
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#x27;',
+            "/": '&#x2F;',
+            "`": '&#x60;',
+            "=": '&#x3D;'
+        };
+        const reg = /[&<>"'`=\/]/g;
+        return input.replace(reg, (match) => map[match]);
+    }
+
+    // Detect potential XSS patterns
+    function containsXSS(input) {
+        const xssPatterns = [
+            /<script[\s\S]*?>/gi,
+            /javascript:/gi,
+            /on\w+\s*=/gi,
+            /<iframe[\s\S]*?>/gi,
+            /<object[\s\S]*?>/gi,
+            /<embed[\s\S]*?>/gi,
+            /<link[\s\S]*?>/gi,
+            /eval\s*\(/gi,
+            /expression\s*\(/gi,
+            /url\s*\(/gi,
+            /data:/gi
+        ];
+        return xssPatterns.some(pattern => pattern.test(input));
+    }
+
+    // Validate individual field
+    function validateField(field) {
+        const formGroup = field.closest('.form-group');
+        if (!formGroup) return true;
+
+        const value = field.value.trim();
+        const isRequired = field.hasAttribute('required');
+        const pattern = field.getAttribute('pattern');
+
+        // Skip validation if optional and empty
+        if (!isRequired && !value) {
+            formGroup.classList.remove('valid', 'invalid');
+            return true;
+        }
+
+        // Required field check
+        if (isRequired && !value) {
+            formGroup.classList.remove('valid');
+            formGroup.classList.add('invalid');
+            return false;
+        }
+
+        // Pattern validation
+        if (pattern && value) {
+            const regex = new RegExp(pattern);
+            if (!regex.test(value)) {
+                formGroup.classList.remove('valid');
+                formGroup.classList.add('invalid');
+                return false;
+            }
+        }
+
+        // XSS check
+        if (containsXSS(value)) {
+            formGroup.classList.remove('valid');
+            formGroup.classList.add('invalid');
+            const errorMsg = formGroup.querySelector('.error-message');
+            if (errorMsg) errorMsg.textContent = 'Invalid characters detected';
+            return false;
+        }
+
+        // Email specific validation
+        if (field.type === 'email' && value) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(value)) {
+                formGroup.classList.remove('valid');
+                formGroup.classList.add('invalid');
+                return false;
+            }
+        }
+
+        // Message minimum length
+        if (field.id === 'message' && value.length < 10) {
+            formGroup.classList.remove('valid');
+            formGroup.classList.add('invalid');
+            return false;
+        }
+
+        formGroup.classList.remove('invalid');
+        formGroup.classList.add('valid');
+        return true;
+    }
+
+    // Character counter for message
+    if (messageTextarea && charCount) {
+        messageTextarea.addEventListener('input', function () {
+            const count = this.value.length;
+            charCount.textContent = count;
+            if (count > 1800) {
+                charCount.style.color = '#f59e0b';
+            } else if (count > 1950) {
+                charCount.style.color = '#ef4444';
+            } else {
+                charCount.style.color = '';
+            }
+        });
+    }
+
+    // Real-time validation on blur
+    if (contactForm) {
+        const formInputs = contactForm.querySelectorAll('input, textarea');
+
+        formInputs.forEach(input => {
+            input.addEventListener('blur', function () {
+                validateField(this);
+            });
+
+            input.addEventListener('input', function () {
+                // Clear invalid state while typing
+                const formGroup = this.closest('.form-group');
+                if (formGroup && formGroup.classList.contains('invalid')) {
+                    formGroup.classList.remove('invalid');
+                }
+            });
+        });
+
+        // Form submission with validation
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let isValid = true;
+            const formData = {};
+
+            // Validate all fields
+            formInputs.forEach(input => {
+                if (!validateField(input)) {
+                    isValid = false;
+                }
+                formData[input.name] = sanitizeInput(input.value.trim());
+            });
+
+            // Also check selects
+            contactForm.querySelectorAll('select').forEach(select => {
+                formData[select.name] = sanitizeInput(select.value);
+                if (select.hasAttribute('required') && !select.value) {
+                    isValid = false;
+                    select.closest('.form-group')?.classList.add('invalid');
+                }
+            });
+
+            if (!isValid) {
+                // Scroll to first error
+                const firstError = contactForm.querySelector('.form-group.invalid');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            // Simulate form submission (replace with actual API call)
+            setTimeout(() => {
+                submitBtn.classList.remove('loading');
+                submitBtn.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20,6 9,17 4,12"></polyline>
+                    </svg>
+                    Message Sent!
+                `;
+                submitBtn.style.background = '#10b981';
+
+                // Reset form after delay
+                setTimeout(() => {
+                    contactForm.reset();
+                    contactForm.querySelectorAll('.form-group').forEach(fg => {
+                        fg.classList.remove('valid', 'invalid');
+                    });
+                    if (charCount) charCount.textContent = '0';
+                    submitBtn.innerHTML = `
+                        <span class="btn-text">Send Message</span>
+                        <span class="btn-loading">
+                            <svg class="spinner" width="18" height="18" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31.4 31.4"></circle>
+                            </svg>
+                            Sending...
+                        </span>
+                        <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                        </svg>
+                    `;
+                    submitBtn.disabled = false;
+                    submitBtn.style.background = '';
+                }, 3000);
+            }, 1500);
+        });
+    }
+
+    // ===== CLICK TO COPY FOR CONTACT INFO =====
+    document.querySelectorAll('.contact-info-item').forEach(item => {
+        item.addEventListener('click', function () {
+            const content = this.querySelector('.info-content p');
+            if (content) {
+                const text = content.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    this.classList.add('copied');
+                    setTimeout(() => {
+                        this.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Failed to copy:', err);
+                });
+            }
+        });
+    });
+
+    // ===== FORM INPUT ANIMATIONS =====
+    document.querySelectorAll('.form-group input, .form-group textarea').forEach(input => {
+        input.addEventListener('focus', function () {
+            this.parentElement.classList.add('focused');
+        });
+
+        input.addEventListener('blur', function () {
+            if (!this.value) {
+                this.parentElement.classList.remove('focused');
+            }
+        });
+    });
+
+    // ===== STAGGER ANIMATION SETUP =====
+    document.querySelectorAll('.stagger').forEach(container => {
+        const children = container.children;
+        Array.from(children).forEach((child, index) => {
+            if (!child.style.transitionDelay) {
+                child.style.transitionDelay = `${index * 0.1}s`;
+            }
+        });
+    });
+
+    // ===== SERVICE CARD HOVER EFFECT =====
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('mouseenter', function () {
+            this.style.transform = 'translateY(-8px)';
+        });
+
+        card.addEventListener('mouseleave', function () {
+            this.style.transform = '';
+        });
+    });
+
+    // ===== INSIGHT CARD HOVER EFFECT =====
+    document.querySelectorAll('.insight-card').forEach(card => {
+        card.addEventListener('mouseenter', function () {
+            const img = this.querySelector('.insight-image img');
+            if (img) {
+                img.style.transform = 'scale(1.08)';
+            }
+        });
+
+        card.addEventListener('mouseleave', function () {
+            const img = this.querySelector('.insight-image img');
+            if (img) {
+                img.style.transform = '';
+            }
+        });
+    });
+
+    // ===== KEYBOARD NAVIGATION =====
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+        }
+    });
+
+    // ===== LAZY LOADING FOR IMAGES =====
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+
+        document.querySelectorAll('img[data-src]').forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
+
+    // ===== PREFERS REDUCED MOTION =====
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    if (prefersReducedMotion.matches) {
+        // Disable animations for users who prefer reduced motion
+        document.documentElement.style.setProperty('--transition-fast', '0s');
+        document.documentElement.style.setProperty('--transition-base', '0s');
+        document.documentElement.style.setProperty('--transition-smooth', '0s');
+    }
+
+    console.log('🛡️ Cyberburgs website initialized');
 });
+
+// ===== UTILITY: THROTTLE FUNCTION =====
+function throttle(func, limit) {
+    let inThrottle;
+    return function (...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
+
+// ===== UTILITY: DEBOUNCE FUNCTION =====
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
