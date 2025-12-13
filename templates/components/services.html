@@ -1,143 +1,213 @@
-{% extends "index.html" %}
-
-{% block content %}
-<!-- Enhanced Services Section -->
-<section id="services" class="section">
-    <div class="services-main-card">
-        <h2 class="security-matrix-title">SECURITY MATRIX</h2>
-        <p class="security-matrix-subtitle">
-            Comprehensive cybersecurity solutions to protect your digital assets and strengthen your security
-            posture.
+<!-- Services Section - Bento Grid Layout -->
+<section id="services" class="section services-section">
+    <div class="section-header">
+        <span class="section-badge">Our Expertise</span>
+        <h2 class="section-title">Security Services</h2>
+        <p class="section-subtitle">
+            Comprehensive cybersecurity solutions to protect your digital assets and strengthen your security posture.
         </p>
+    </div>
 
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-header">
-                    <div class="service-icon">🛡️</div>
-                    <h4 class="service-title">PENETRATION TESTING</h4>
+    <div class="services-bento">
+        <!-- Featured Card - Penetration Testing -->
+        <div class="bento-card bento-featured reveal-scale" data-service="pentest">
+            <div class="bento-glow"></div>
+            <div class="bento-content">
+                <div class="bento-icon-wrapper">
+                    <div class="bento-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            <path d="M9 12l2 2 4-4" />
+                        </svg>
+                    </div>
+                    <div class="bento-icon-ring"></div>
                 </div>
-                <p class="service-description">
-                    Identify vulnerabilities before attackers do.
-                </p>
-                <ul class="service-features">
-                    <li>Network Testing</li>
-                    <li>Web App Testing</li>
-                    <li>Social Engineering</li>
-                </ul>
+                <div class="bento-text">
+                    <span class="bento-label">Core Service</span>
+                    <h3 class="bento-title">Penetration Testing</h3>
+                    <p class="bento-description">
+                        Identify vulnerabilities before attackers do with comprehensive security assessments across your
+                        entire infrastructure.
+                    </p>
+                    <ul class="bento-features">
+                        <li><span class="feature-dot"></span>Network Penetration Testing</li>
+                        <li><span class="feature-dot"></span>Web Application Security</li>
+                        <li><span class="feature-dot"></span>Social Engineering Tests</li>
+                    </ul>
+                </div>
             </div>
+            <div class="bento-pattern"></div>
+        </div>
 
-            <div class="service-card">
-                <div class="service-header">
-                    <div class="service-icon">🔒</div>
-                    <h4 class="service-title">THREAT INTELLIGENCE</h4>
+        <!-- Featured Card - Threat Intelligence -->
+        <div class="bento-card bento-featured reveal-scale" data-service="threat">
+            <div class="bento-glow"></div>
+            <div class="bento-content">
+                <div class="bento-icon-wrapper">
+                    <div class="bento-icon bento-icon-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            <circle cx="12" cy="16" r="1" />
+                        </svg>
+                    </div>
+                    <div class="bento-icon-ring"></div>
                 </div>
-                <p class="service-description">
-                    Stay ahead of emerging threats.
-                </p>
-                <ul class="service-features">
-                    <li>Real-time Monitoring</li>
-                    <li>Threat Analysis</li>
-                    <li>Incident Response</li>
-                </ul>
+                <div class="bento-text">
+                    <span class="bento-label">Intelligence</span>
+                    <h3 class="bento-title">Threat Intelligence</h3>
+                    <p class="bento-description">
+                        Stay ahead of emerging threats with real-time monitoring, analysis, and proactive threat hunting
+                        capabilities.
+                    </p>
+                    <ul class="bento-features">
+                        <li><span class="feature-dot"></span>Real-time Threat Monitoring</li>
+                        <li><span class="feature-dot"></span>Advanced Threat Analysis</li>
+                        <li><span class="feature-dot"></span>Incident Response Support</li>
+                    </ul>
+                </div>
             </div>
+            <div class="bento-pattern"></div>
+        </div>
 
-            <div class="service-card">
-                <div class="service-header">
-                    <div class="service-icon">💻</div>
-                    <h4 class="service-title">SECURE DEVELOPMENT</h4>
+        <!-- Medium Card - Secure Development -->
+        <div class="bento-card bento-medium reveal-scale" data-service="secdev">
+            <div class="bento-glow"></div>
+            <div class="bento-content">
+                <div class="bento-icon-wrapper">
+                    <div class="bento-icon bento-icon-subtle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="16 18 22 12 16 6" />
+                            <polyline points="8 6 2 12 8 18" />
+                            <line x1="14" y1="4" x2="10" y2="20" />
+                        </svg>
+                    </div>
                 </div>
-                <p class="service-description">
-                    Build secure applications from the ground up.
-                </p>
-                <ul class="service-features">
-                    <li>Code Review</li>
-                    <li>Secure SDLC</li>
-                    <li>DevSecOps</li>
-                </ul>
-            </div>
-
-            <div class="service-card">
-                <div class="service-header">
-                    <div class="service-icon">🚨</div>
-                    <h4 class="service-title">INCIDENT RESPONSE</h4>
-                </div>
-                <p class="service-description">
-                    Rapid response to security incidents.
-                </p>
-                <ul class="service-features">
-                    <li>Forensics</li>
-                    <li>Containment</li>
-                    <li>Recovery</li>
-                </ul>
-            </div>
-
-            <div class="service-card">
-                <div class="service-header">
-                    <div class="service-icon">🏗️</div>
-                    <h4 class="service-title">INFRASTRUCTURE SECURITY</h4>
-                </div>
-                <p class="service-description">
-                    Robust protection for your network, systems, and Active Directory.
-                </p>
-                <ul class="service-features">
-                    <li>Cloud Security</li>
-                    <li>Network Defense</li>
-                    <li>Active Directory Audit</li>
-                    <li>Security Architecture</li>
-                </ul>
-            </div>
-
-            <div class="service-card">
-                <div class="service-header">
-                    <div class="service-icon">📋</div>
-                    <h4 class="service-title">COMPLIANCE & STANDARDS</h4>
-                </div>
-                <p class="service-description">
-                    Ensure your security measures align with industry regulations and best practices for maximum
-                    protection.
-                </p>
-                <ul class="service-features">
-                    <li>ISO 27001</li>
-                    <li>GDPR Compliance</li>
-                    <li>PCI DSS</li>
-                    <li>HIPAA Security</li>
-                </ul>
-            </div>
-
-            <div class="service-card">
-                <div class="service-header">
-                    <div class="service-icon">🔍</div>
-                    <h4 class="service-title">VULNERABILITY MANAGEMENT</h4>
-                </div>
-                <p class="service-description">
-                    Continuous monitoring and assessment of your systems to identify and remediate vulnerabilities
-                    promptly.
-                </p>
-                <ul class="service-features">
-                    <li>Threat Detection</li>
-                    <li>Risk Assessment</li>
-                    <li>Patch Management</li>
-                    <li>Security Posture Assessment</li>
-                </ul>
-            </div>
-
-            <div class="service-card">
-                <div class="service-header">
-                    <div class="service-icon">🔗</div>
-                    <h4 class="service-title">ZERO-TRUST ARCHITECTURE</h4>
-                </div>
-                <p class="service-description">
-                    Establish robust trust and enforce strict identity verification across all access points to
-                    enhance security.
-                </p>
-                <ul class="service-features">
-                    <li>Micro-Segmentation</li>
-                    <li>Identity & Access Management</li>
-                    <li>Least Privilege Enforcement</li>
-                    <li>Continuous Authentication</li>
+                <h3 class="bento-title">Secure Development</h3>
+                <p class="bento-description">Build secure applications from the ground up with best practices.</p>
+                <ul class="bento-features">
+                    <li><span class="feature-dot"></span>Secure Code Review</li>
+                    <li><span class="feature-dot"></span>Secure SDLC Implementation</li>
+                    <li><span class="feature-dot"></span>DevSecOps Integration</li>
                 </ul>
             </div>
         </div>
+
+        <!-- Medium Card - Incident Response -->
+        <div class="bento-card bento-medium reveal-scale" data-service="incident">
+            <div class="bento-glow"></div>
+            <div class="bento-content">
+                <div class="bento-icon-wrapper">
+                    <div class="bento-icon bento-icon-subtle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                            <line x1="12" y1="9" x2="12" y2="13" />
+                            <line x1="12" y1="17" x2="12.01" y2="17" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="bento-title">Incident Response</h3>
+                <p class="bento-description">Rapid response to security incidents to minimize damage and recovery time.
+                </p>
+                <ul class="bento-features">
+                    <li><span class="feature-dot"></span>Digital Forensics</li>
+                    <li><span class="feature-dot"></span>Threat Containment</li>
+                    <li><span class="feature-dot"></span>Recovery & Remediation</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Standard Card - Infrastructure Security -->
+        <div class="bento-card bento-standard reveal-scale" data-service="infra">
+            <div class="bento-content">
+                <div class="bento-icon-wrapper">
+                    <div class="bento-icon bento-icon-subtle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                            <path d="M6 8h.01M9 8h.01" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="bento-title">Infrastructure Security</h3>
+                <p class="bento-description">Robust protection for your network, systems, and Active Directory.</p>
+                <ul class="bento-features">
+                    <li><span class="feature-dot"></span>Cloud Security Architecture</li>
+                    <li><span class="feature-dot"></span>Network Defense Solutions</li>
+                    <li><span class="feature-dot"></span>Active Directory Auditing</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Standard Card - Compliance -->
+        <div class="bento-card bento-standard reveal-scale" data-service="compliance">
+            <div class="bento-content">
+                <div class="bento-icon-wrapper">
+                    <div class="bento-icon bento-icon-subtle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="bento-title">Compliance & Standards</h3>
+                <p class="bento-description">Ensure alignment with industry regulations and security best practices.</p>
+                <ul class="bento-features">
+                    <li><span class="feature-dot"></span>ISO 27001 Certification</li>
+                    <li><span class="feature-dot"></span>GDPR Compliance</li>
+                    <li><span class="feature-dot"></span>PCI DSS & HIPAA</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Medium Card - Vulnerability Management -->
+        <div class="bento-card bento-medium reveal-scale" data-service="vuln">
+            <div class="bento-content">
+                <div class="bento-icon-wrapper">
+                    <div class="bento-icon bento-icon-subtle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                            <path d="M11 8v6M8 11h6" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="bento-title">Vulnerability Management</h3>
+                <p class="bento-description">Continuous monitoring and assessment to identify and remediate
+                    vulnerabilities.</p>
+                <ul class="bento-features">
+                    <li><span class="feature-dot"></span>Continuous Threat Detection</li>
+                    <li><span class="feature-dot"></span>Risk Assessment</li>
+                    <li><span class="feature-dot"></span>Patch Management</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Medium Card - Zero Trust -->
+        <div class="bento-card bento-medium reveal-scale" data-service="zerotrust">
+            <div class="bento-content">
+                <div class="bento-icon-wrapper">
+                    <div class="bento-icon bento-icon-subtle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="bento-title">Zero-Trust Architecture</h3>
+                <p class="bento-description">Implement robust trust verification across all access points.</p>
+                <ul class="bento-features">
+                    <li><span class="feature-dot"></span>Micro-Segmentation</li>
+                    <li><span class="feature-dot"></span>Identity & Access Management</li>
+                    <li><span class="feature-dot"></span>Least Privilege Enforcement</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Empty spacer for centering last row -->
+        <div class="bento-spacer"></div>
     </div>
 </section>
-{% endblock %}
