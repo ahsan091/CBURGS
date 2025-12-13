@@ -1,103 +1,243 @@
-{% extends "index.html" %}
+<!-- Insights Section -->
+<section id="insights" class="section insights-section">
+    <!-- Background Pattern -->
+    <div class="insights-bg-pattern"></div>
 
-{% block content %}
-<!-- New Insights Section with Strip Layout -->
-<section id="insights" class="insights-section">
-    <div class="insights-main-card">
-        <h2 class="insights-title">CYBER INSIGHTS</h2>
-        <p class="insights-subtitle">
-            Stay informed with the latest cybersecurity trends, threats, and defense strategies through our
-            expert insights and analysis.
+    <div class="section-header">
+        <span class="section-badge">Knowledge Hub</span>
+        <h2 class="section-title">Cyber Insights</h2>
+        <p class="section-subtitle">
+            Stay informed with the latest cybersecurity trends, threats, and defense strategies
+            through our expert insights and analysis.
         </p>
+    </div>
 
-        <div class="insights-list">
-            <!-- Blog Strip 1 -->
-            <a href="https://www.acigjournal.com/Ransomware-Why-It-s-Growing-and-How-to-Curb-Its-Growth,192959,0,2.html" class="blog-link">
-                <article class="blog-strip">
-                    <div class="blog-image-section">
-                        <span class="blog-category-badge">Threat Analysis</span>
-                        <img src="/static/img/blog_1.png" alt="Ransomware" class="blog-image">
-                    </div>
-                    <div class="blog-content-section">
-                        <h3 class="blog-title">The Rise of Ransomware in 2024</h3>
-                        <p class="blog-description">
-                            How ransomware continues to evolve and what you can do about it.
-                        </p>
-                        <div class="blog-metadata">
-                            <div class="blog-tags">
-                                <span class="blog-tag">Ransomware</span>
-                                <span class="blog-tag">Cybersecurity</span>
-                                <span class="blog-tag">Defense</span>
-                            </div>
-                            <div class="blog-stats">
-                                <span class="blog-stat">
-                                    <span class="stat-icon">⏱️</span>
-                                    30 MIN READ
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </a>
+    <!-- Category Filter Tabs -->
+    <div class="insights-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="threat">Threat Analysis</button>
+        <button class="filter-btn" data-filter="innovation">Innovation</button>
+        <button class="filter-btn" data-filter="architecture">Architecture</button>
+    </div>
 
-            <!-- Blog Strip 2 -->
-            <a href="https://www.tandfonline.com/doi/full/10.1080/08839514.2024.2439609#d1e363" class="blog-link">
-                <article class="blog-strip">
-                    <div class="blog-image-section">
-                        <span class="blog-category-badge">Innovation</span>
-                        <img src="/static/img/blog_2.png" alt="AI Security" class="blog-image">
-                    </div>
-                    <div class="blog-content-section">
-                        <h3 class="blog-title">AI & Cybersecurity > The Next Frontier</h3>
-                        <p class="blog-description">
-                            Exploring how AI is transforming threat detection and response strategies.
-                        </p>
-                        <div class="blog-metadata">
-                            <div class="blog-tags">
-                                <span class="blog-tag">AI</span>
-                                <span class="blog-tag">Cybersecurity</span>
-                                <span class="blog-tag">Threat Hunting</span>
-                            </div>
-                            <div class="blog-stats">
-                                <span class="blog-stat">
-                                    <span class="stat-icon">⏱️</span>
-                                    20 MIN READ
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </a>
+    <div class="insights-grid stagger">
+        <!-- Featured Insight Card 1 -->
+        <a href="https://www.acigjournal.com/Ransomware-Why-It-s-Growing-and-How-to-Curb-Its-Growth,192959,0,2.html"
+            class="insight-card featured reveal-scale" target="_blank" rel="noopener" data-category="threat">
+            <!-- Badge -->
+            <div class="insight-badge popular">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                Popular
+            </div>
 
-            <!-- Blog Strip 3 -->
-            <a href="https://nvlpubs.nist.gov/nistpubs/specialpublications/NIST.SP.800-207.pdf" class="blog-link">
-                <article class="blog-strip">
-                    <div class="blog-image-section">
-                        <span class="blog-category-badge">Architecture</span>
-                        <img src="/static/img/blog_3.png" alt="Zero Trust" class="blog-image">
+            <div class="insight-image">
+                <img src="/static/img/blog_1.png" alt="Ransomware Analysis">
+                <div class="image-overlay"></div>
+                <div class="reading-progress"></div>
+            </div>
+
+            <div class="insight-content">
+                <div class="insight-header">
+                    <span class="insight-category threat">Threat Analysis</span>
+                    <span class="insight-date">Dec 10, 2024</span>
+                </div>
+
+                <h3 class="insight-title">The Rise of Ransomware in 2024</h3>
+
+                <p class="insight-excerpt">
+                    How ransomware continues to evolve and what organizations can do to protect themselves.
+                </p>
+
+                <!-- Author Info -->
+                <div class="insight-author">
+                    <div class="author-avatar">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
                     </div>
-                    <div class="blog-content-section">
-                        <h3 class="blog-title">Zero-Trust Architecture</h3>
-                        <p class="blog-description">
-                            Why Zero Trust is the future of cybersecurity.
-                        </p>
-                        <div class="blog-metadata">
-                            <div class="blog-tags">
-                                <span class="blog-tag">Zero Trust</span>
-                                <span class="blog-tag">Security</span>
-                                <span class="blog-tag">Network</span>
-                            </div>
-                            <div class="blog-stats">
-                                <span class="blog-stat">
-                                    <span class="stat-icon">⏱️</span>
-                                    1 HOUR READ
-                                </span>
-                            </div>
-                        </div>
+                    <div class="author-info">
+                        <span class="author-name">Security Research Team</span>
+                        <span class="author-role">Cyberburgs Analysts</span>
                     </div>
-                </article>
-            </a>
-        </div>
+                </div>
+
+                <div class="insight-meta">
+                    <span class="read-time">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        30 min read
+                    </span>
+                    <span class="views">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        2.4k views
+                    </span>
+                    <span class="source external">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15,3 21,3 21,9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        External
+                    </span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Insight Card 2 -->
+        <a href="https://www.tandfonline.com/doi/full/10.1080/08839514.2024.2439609#d1e363"
+            class="insight-card reveal-scale" target="_blank" rel="noopener" data-category="innovation">
+
+            <div class="insight-image">
+                <img src="/static/img/blog_2.png" alt="AI Security">
+                <div class="image-overlay"></div>
+                <div class="reading-progress"></div>
+            </div>
+
+            <div class="insight-content">
+                <div class="insight-header">
+                    <span class="insight-category innovation">Innovation</span>
+                    <span class="insight-date">Dec 8, 2024</span>
+                </div>
+
+                <h3 class="insight-title">AI & Cybersecurity: The Next Frontier</h3>
+
+                <p class="insight-excerpt">
+                    Exploring how artificial intelligence is transforming threat detection and response.
+                </p>
+
+                <div class="insight-author">
+                    <div class="author-avatar">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                        </svg>
+                    </div>
+                    <div class="author-info">
+                        <span class="author-name">AI Research Division</span>
+                        <span class="author-role">Innovation Lab</span>
+                    </div>
+                </div>
+
+                <div class="insight-meta">
+                    <span class="read-time">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        20 min read
+                    </span>
+                    <span class="views">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        1.8k views
+                    </span>
+                    <span class="source external">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15,3 21,3 21,9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                        External
+                    </span>
+                </div>
+            </div>
+        </a>
+
+        <!-- Insight Card 3 -->
+        <a href="https://nvlpubs.nist.gov/nistpubs/specialpublications/NIST.SP.800-207.pdf"
+            class="insight-card reveal-scale" target="_blank" rel="noopener" data-category="architecture">
+
+            <!-- New Badge -->
+            <div class="insight-badge new">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+                New
+            </div>
+
+            <div class="insight-image">
+                <img src="/static/img/blog_3.png" alt="Zero Trust Architecture">
+                <div class="image-overlay"></div>
+                <div class="reading-progress"></div>
+            </div>
+
+            <div class="insight-content">
+                <div class="insight-header">
+                    <span class="insight-category architecture">Architecture</span>
+                    <span class="insight-date">Dec 5, 2024</span>
+                </div>
+
+                <h3 class="insight-title">Zero-Trust Architecture Guide</h3>
+
+                <p class="insight-excerpt">
+                    NIST's comprehensive guide on implementing Zero Trust security architecture.
+                </p>
+
+                <div class="insight-author">
+                    <div class="author-avatar nist">
+                        <span>NIST</span>
+                    </div>
+                    <div class="author-info">
+                        <span class="author-name">NIST Publication</span>
+                        <span class="author-role">Official Document</span>
+                    </div>
+                </div>
+
+                <div class="insight-meta">
+                    <span class="read-time">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        1 hour read
+                    </span>
+                    <span class="views">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        5.2k views
+                    </span>
+                    <span class="source pdf">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        PDF
+                    </span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <!-- View All Button -->
+    <div class="insights-cta">
+        <a href="#" class="view-all-btn">
+            View All Insights
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        </a>
     </div>
 </section>
-{% endblock %}
