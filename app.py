@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')  # index.html already uses includes
+    return render_template('index.html')
 
 @app.route('/services')
 def services():
