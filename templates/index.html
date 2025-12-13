@@ -4,46 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyberburgs – Cybersecurity & Threat Intelligence</title>
+    <title>Cyberburgs – Enterprise Cybersecurity Solutions</title>
     <meta name="description"
-        content="Explore Cyberburgs – a cybersecurity hub offering threat simulations, red team tools, AI defenses, and expert analysis.">
+        content="Cyberburgs provides enterprise-grade cybersecurity solutions including threat intelligence, penetration testing, and 24/7 security monitoring to protect your digital assets.">
 
-    <!-- 🌐 Structured Data (Schema.org) -->
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://cyberburgs.com/">
+    <meta property="og:title" content="Cyberburgs – Enterprise Cybersecurity Solutions">
+    <meta property="og:description"
+        content="Comprehensive cybersecurity solutions trusted by enterprises worldwide. Defend your assets with cutting-edge threat intelligence.">
+    <meta property="og:image" content="https://cyberburgs.com/static/img/Logo.jpeg">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cyberburgs – Enterprise Cybersecurity Solutions">
+    <meta name="twitter:description" content="Comprehensive cybersecurity solutions trusted by enterprises worldwide.">
+
+    <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Cyberburgs",
+        "description": "Enterprise cybersecurity solutions provider offering threat intelligence, penetration testing, and security consulting services.",
         "url": "https://cyberburgs.com",
         "logo": "https://cyberburgs.com/static/img/Logo.jpeg",
         "sameAs": [
             "https://github.com/Cyberburgs",
             "https://linkedin.com/company/cyberburgs",
             "https://twitter.com/cyberburgs"
-        ]
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+92-309-0599263",
+            "contactType": "sales",
+            "email": "admin@cyberburgs.com"
+        }
     }
     </script>
 
-    <!-- Google Fonts - Premium Typography -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="icon" type="image/x-icon" href="/static/img/Logo.ico">
 </head>
 
 <body>
-    <div class="particles" id="particles"></div>
-
     {% include 'components/navbar.html' %}
 
     {% block content %}
-        {% include 'components/home.html' %}
-        {% include 'components/services.html' %}
-        {% include 'components/projects.html' %}
-        {% include 'components/insights.html' %}
-        {% include 'components/contact.html' %}
+    {% include 'components/home.html' %}
+    {% include 'components/services.html' %}
+    {% include 'components/projects.html' %}
+    {% include 'components/insights.html' %}
+    {% include 'components/contact.html' %}
     {% endblock %}
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
