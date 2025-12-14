@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetSection = document.querySelector(targetId);
 
             if (targetSection) {
-                const headerOffset = 100;
+                const headerOffset = 80;
                 const elementPosition = targetSection.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         threshold: 0.5
     });
 
-    const statsSection = document.querySelector('.stats-section');
+    const statsSection = document.querySelector('.about-section');
     if (statsSection) {
         statsObserver.observe(statsSection);
     }
@@ -310,6 +310,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Form submission with validation
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
+
+            // Honeypot check - if filled, silent fail (bot detected)
+            const honeypot = document.getElementById('_gotcha');
+            if (honeypot && honeypot.value) {
+                console.log('Bot detected via honeypot');
+                return; // Silent reject
+            }
 
             let isValid = true;
             const formData = {};
