@@ -1,7 +1,112 @@
-<!-- Insights Section -->
+<!-- Insights Section - Terminal Style -->
 <section id="insights" class="section insights-section">
-    <!-- Background Pattern -->
-    <div class="insights-bg-pattern"></div>
+    <style>
+        .insights-section {
+            background: #0a0f1a;
+            /* Dark background */
+        }
+
+        .insights-terminal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .terminal-card {
+            display: block;
+            background: rgba(10, 15, 26, 0.8);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            /* Primary color low opacity */
+            border-left: 2px solid var(--primary);
+            /* Accent border */
+            padding: 24px 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-card:hover {
+            border-color: var(--primary);
+            background: rgba(16, 185, 129, 0.03);
+            transform: translateX(5px);
+            box-shadow: -5px 0 15px -5px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Header */
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+
+        .terminal-title {
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .terminal-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        /* Excerpt */
+        .terminal-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            max-width: 90%;
+            line-clamp: 2;
+        }
+
+        /* Tags */
+        .terminal-tags {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .terminal-tag {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: color 0.2s;
+        }
+
+        .terminal-card:hover .terminal-tag {
+            color: var(--text-primary);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        /* Blink cursor effect on hover? */
+        .terminal-title::before {
+            content: '> ';
+            color: var(--text-muted);
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+
+        .terminal-card:hover .terminal-title::before {
+            color: var(--primary);
+            opacity: 1;
+            padding-right: 5px;
+        }
+    </style>
 
     <div class="section-header">
         <span class="section-badge">Knowledge Hub</span>
@@ -12,232 +117,75 @@
         </p>
     </div>
 
-    <!-- Category Filter Tabs -->
-    <div class="insights-filters">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="threat">Threat Analysis</button>
-        <button class="filter-btn" data-filter="innovation">Innovation</button>
-        <button class="filter-btn" data-filter="architecture">Architecture</button>
+
+
+    <!-- Terminal List Layout -->
+    <div class="insights-terminal-list stagger">
+        {% if blogs %}
+        {% for blog in blogs %}
+        <a href="/blog/{{ blog.filename }}"
+            class="terminal-card reveal-up {% if loop.index > 3 %}archived-post{% endif %}"
+            data-category="{{ blog.category }}" {% if loop.index> 3 %}style="display: none;"{% endif %}>
+
+            <div class="terminal-header">
+                <h3 class="terminal-title">{{ blog.title }}</h3>
+                <span class="terminal-date">{{ blog.date }}</span>
+            </div>
+
+            <p class="terminal-excerpt">
+                {{ blog.excerpt }}
+            </p>
+
+            <div class="terminal-tags">
+                <!-- Generating fake tags based on category effectively -->
+                <span class="terminal-tag">#{{ blog.category }}</span>
+                <span class="terminal-tag">#security</span>
+                <span class="terminal-tag">#cyberburgs</span>
+            </div>
+        </a>
+        {% endfor %}
+        {% else %}
+        <!-- Fallback Terminal Message -->
+        <div class="terminal-card" style="text-align: center; border-left: 2px solid var(--text-muted);">
+            <p style="font-family: 'JetBrains Mono'; color: var(--text-muted);">
+                <span class="pulse">_</span> Connectivity established. Retrieving artifacts...
+                <br>
+                <span style="font-size: 0.8rem; opacity: 0.6;">(Check back in a few moments)</span>
+            </p>
+        </div>
+        {% endif %}
     </div>
 
-    <div class="insights-grid stagger">
-        <!-- Featured Insight Card 1 -->
-        <a href="https://www.acigjournal.com/Ransomware-Why-It-s-Growing-and-How-to-Curb-Its-Growth,192959,0,2.html"
-            class="insight-card featured reveal-scale" target="_blank" rel="noopener" data-category="threat">
-            <!-- Badge -->
-            <div class="insight-badge popular">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                </svg>
-                Popular
-            </div>
-
-            <div class="insight-image">
-                <img src="/static/img/blog_1.png" alt="Ransomware Analysis">
-                <div class="image-overlay"></div>
-                <div class="reading-progress"></div>
-            </div>
-
-            <div class="insight-content">
-                <div class="insight-header">
-                    <span class="insight-category threat">Threat Analysis</span>
-                    <span class="insight-date">Dec 10, 2024</span>
-                </div>
-
-                <h3 class="insight-title">The Rise of Ransomware in 2024</h3>
-
-                <p class="insight-excerpt">
-                    How ransomware continues to evolve and what organizations can do to protect themselves.
-                </p>
-
-                <!-- Author Info -->
-                <div class="insight-author">
-                    <div class="author-avatar">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                        </svg>
-                    </div>
-                    <div class="author-info">
-                        <span class="author-name">Security Research Team</span>
-                        <span class="author-role">Cyberburgs Analysts</span>
-                    </div>
-                </div>
-
-                <div class="insight-meta">
-                    <span class="read-time">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12,6 12,12 16,14"></polyline>
-                        </svg>
-                        30 min read
-                    </span>
-                    <span class="views">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        2.4k views
-                    </span>
-                    <span class="source external">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15,3 21,3 21,9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                        External
-                    </span>
-                </div>
-            </div>
-        </a>
-
-        <!-- Insight Card 2 -->
-        <a href="https://www.tandfonline.com/doi/full/10.1080/08839514.2024.2439609#d1e363"
-            class="insight-card reveal-scale" target="_blank" rel="noopener" data-category="innovation">
-
-            <div class="insight-image">
-                <img src="/static/img/blog_2.png" alt="AI Security">
-                <div class="image-overlay"></div>
-                <div class="reading-progress"></div>
-            </div>
-
-            <div class="insight-content">
-                <div class="insight-header">
-                    <span class="insight-category innovation">Innovation</span>
-                    <span class="insight-date">Dec 8, 2024</span>
-                </div>
-
-                <h3 class="insight-title">AI & Cybersecurity: The Next Frontier</h3>
-
-                <p class="insight-excerpt">
-                    Exploring how artificial intelligence is transforming threat detection and response.
-                </p>
-
-                <div class="insight-author">
-                    <div class="author-avatar">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                        </svg>
-                    </div>
-                    <div class="author-info">
-                        <span class="author-name">AI Research Division</span>
-                        <span class="author-role">Innovation Lab</span>
-                    </div>
-                </div>
-
-                <div class="insight-meta">
-                    <span class="read-time">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12,6 12,12 16,14"></polyline>
-                        </svg>
-                        20 min read
-                    </span>
-                    <span class="views">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        1.8k views
-                    </span>
-                    <span class="source external">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                            <polyline points="15,3 21,3 21,9"></polyline>
-                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                        </svg>
-                        External
-                    </span>
-                </div>
-            </div>
-        </a>
-
-        <!-- Insight Card 3 -->
-        <a href="https://nvlpubs.nist.gov/nistpubs/specialpublications/NIST.SP.800-207.pdf"
-            class="insight-card reveal-scale" target="_blank" rel="noopener" data-category="architecture">
-
-            <!-- New Badge -->
-            <div class="insight-badge new">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                </svg>
-                New
-            </div>
-
-            <div class="insight-image">
-                <img src="/static/img/blog_3.png" alt="Zero Trust Architecture">
-                <div class="image-overlay"></div>
-                <div class="reading-progress"></div>
-            </div>
-
-            <div class="insight-content">
-                <div class="insight-header">
-                    <span class="insight-category architecture">Architecture</span>
-                    <span class="insight-date">Dec 5, 2024</span>
-                </div>
-
-                <h3 class="insight-title">Zero-Trust Architecture Guide</h3>
-
-                <p class="insight-excerpt">
-                    NIST's comprehensive guide on implementing Zero Trust security architecture.
-                </p>
-
-                <div class="insight-author">
-                    <div class="author-avatar nist">
-                        <span>NIST</span>
-                    </div>
-                    <div class="author-info">
-                        <span class="author-name">NIST Publication</span>
-                        <span class="author-role">Official Document</span>
-                    </div>
-                </div>
-
-                <div class="insight-meta">
-                    <span class="read-time">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12,6 12,12 16,14"></polyline>
-                        </svg>
-                        1 hour read
-                    </span>
-                    <span class="views">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        5.2k views
-                    </span>
-                    <span class="source pdf">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        PDF
-                    </span>
-                </div>
-            </div>
-        </a>
-    </div>
-
-    <!-- View All Button -->
-    <div class="insights-cta">
-        <a href="#" class="view-all-btn">
-            View All Insights
+    <!-- View All Button (Only if > 3 posts) -->
+    {% if blogs|length > 3 %}
+    <div class="insights-cta" style="margin-top: 50px;">
+        <button onclick="revealArchive()" class="view-all-btn" id="archiveBtn"
+            style="font-family: 'JetBrains Mono'; background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 10px 20px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s;">
+            ./view_archive.sh
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-        </a>
+        </button>
     </div>
+
+    <script>
+        function revealArchive() {
+            // Find all hidden posts
+            const hiddenPosts = document.querySelectorAll('.archived-post');
+            const btn = document.getElementById('archiveBtn');
+
+            // Reveal them with a nice fade effect if possible, or just display
+            hiddenPosts.forEach(post => {
+                post.style.display = 'block';
+                // Trigger animation if utilizing the reveal-up class
+                post.style.animation = 'none';
+                post.offsetHeight; /* trigger reflow */
+                post.style.animation = null;
+            });
+
+            // Hide or update the button
+            btn.style.display = 'none';
+        }
+    </script>
+    {% endif %}
 </section>
