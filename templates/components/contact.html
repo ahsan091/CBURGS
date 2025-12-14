@@ -19,20 +19,24 @@
         <div class="contact-form-section reveal-left">
             <div class="contact-form-card">
                 <form class="contact-form" id="contactForm" novalidate>
+                    <!-- Security Honeypot (Hidden) -->
+                    <div style="display:none; opacity:0; visibility:hidden; position:absolute; left:-9999px;">
+                        <input type="text" name="_gotcha" id="_gotcha" tabindex="-1" autocomplete="off">
+                    </div>
                     <div class="form-row">
                         <div class="form-group floating-label">
                             <input type="text" id="firstName" name="firstName" placeholder=" " required
-                                pattern="^[a-zA-Z\s]{2,30}$" maxlength="30">
+                                pattern="^[a-zA-Z\s\-\']{2,50}$" maxlength="50">
                             <label for="firstName">First Name</label>
                             <span class="validation-icon"></span>
-                            <span class="error-message">Please enter a valid name (2-30 letters)</span>
+                            <span class="error-message">Valid name required (2-50 chars)</span>
                         </div>
                         <div class="form-group floating-label">
                             <input type="text" id="lastName" name="lastName" placeholder=" " required
-                                pattern="^[a-zA-Z\s]{2,30}$" maxlength="30">
+                                pattern="^[a-zA-Z\s\-\']{2,50}$" maxlength="50">
                             <label for="lastName">Last Name</label>
                             <span class="validation-icon"></span>
-                            <span class="error-message">Please enter a valid name (2-30 letters)</span>
+                            <span class="error-message">Valid name required (2-50 chars)</span>
                         </div>
                     </div>
                     <div class="form-group floating-label">
@@ -138,14 +142,16 @@
                 <div class="contact-info-item">
                     <div class="info-icon-wrapper">
                         <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
                             <path
-                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
                             </path>
                         </svg>
                     </div>
                     <div class="info-content">
-                        <h4>Phone</h4>
-                        <p>+92 309 0599263</p>
+                        <h4>Service Area</h4>
+                        <p>Global / Remote</p>
                     </div>
                 </div>
 
@@ -201,13 +207,7 @@
                         </svg>
                         admin@cyberburgs.com
                     </a>
-                    <a href="tel:+923090599263" class="quick-contact">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path
-                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                        </svg>
-                        +92 309 0599263
-                    </a>
+
                 </div>
                 <div class="social-links">
                     <a href="https://github.com/Cyberburgs" class="social-link" title="GitHub" target="_blank"
@@ -266,7 +266,7 @@
             <div class="footer-links">
                 <h4>Company</h4>
                 <ul>
-                    <li><a href="#home">About Us</a></li>
+                    <li><a href="#about">About Us</a></li>
                     <li><a href="#projects">Case Studies</a></li>
                     <li><a href="#insights">Blog</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -279,7 +279,7 @@
                     <li><a href="#insights">Security Insights</a></li>
                     <li><a href="#">Documentation</a></li>
                     <li><a href="#">Trust Center</a></li>
-                    <li><a href="#">Partners</a></li>
+                    <li><a href="#about">Partners</a></li>
                 </ul>
             </div>
         </div>
