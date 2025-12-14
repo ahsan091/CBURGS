@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyberburgs – Enterprise Cybersecurity Solutions</title>
+    <title>{{ title or "Cyberburgs – Enterprise Cybersecurity Solutions" }}</title>
     <meta name="description"
         content="Cyberburgs provides enterprise-grade cybersecurity solutions including threat intelligence, penetration testing, and 24/7 security monitoring to protect your digital assets.">
+    <link rel="canonical" href="https://cyberburgs.com/">
 
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://cyberburgs.com/">
+    <meta property="og:site_name" content="Cyberburgs">
     <meta property="og:title" content="Cyberburgs – Enterprise Cybersecurity Solutions">
     <meta property="og:description"
         content="Comprehensive cybersecurity solutions trusted by enterprises worldwide. Defend your assets with cutting-edge threat intelligence.">
@@ -43,6 +45,21 @@
         }
     }
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://cyberburgs.com/",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://cyberburgs.com/search?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,6 +77,7 @@
 
     {% block content %}
     {% include 'components/home.html' %}
+    {% include 'components/about.html' %}
     {% include 'components/services.html' %}
     {% include 'components/projects.html' %}
     {% include 'components/insights.html' %}
